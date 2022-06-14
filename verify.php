@@ -5,9 +5,11 @@ if(isset($_POST['verifybtn'])){
     $confirm = $_POST['confirm'];
     if($_SESSION['verified'] == $confirm){
         $email = $_SESSION['email'];
-        $queryupdate = "UPDATE account SET verifiedemail = 'true' WHERE email = '$email' ";
+        $queryupdate = "UPDATE account SET verifiedemail = 'true', verify = 'activated' WHERE email = '$email' ";
         $sqlUpdate = mysqli_query($connection,$queryupdate);
         
+        echo "<script>alert(account verified successfully! thank you for verify!)</script>";   
+        echo "<script>window.location.href='/login_form/login.php'</script>";   
     }
     else{
         echo 'negative';
