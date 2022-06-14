@@ -21,7 +21,7 @@ else{
 $sqlquery = "SELECT * FROM account WHERE email = '$email' AND password = '$password'";
 $sqlresult =  mysqli_query($connection,$sqlquery);
 $results = mysqli_fetch_array($sqlresult);
-if(mysqli_num_rows($sqlresult) > 0){
+if(mysqli_num_rows($sqlresult) > 0 && $results['verifiedemail'] == 'true'){
     $_SESSION['status'] = 'valid';
     $_SESSION['email'] = $results['email'];
     $_SESSION['firstname'] = $results['firstname'];
@@ -81,5 +81,5 @@ else{
 
     
 </body>
-<script src="./javascript.js"></script>
+
 </html>

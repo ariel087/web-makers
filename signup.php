@@ -1,7 +1,9 @@
 <?php
-require("./database.php");
-
+require('./PHPMailerAutoload.php');
+require('./database.php');
+session_start();
 if(isset($_POST['signupbtn'])){
+     
     $firstname = $_POST['fname'];
     $middlename = $_POST['mname'];
     $lastname = $_POST['lname'];
@@ -12,9 +14,45 @@ if(isset($_POST['signupbtn'])){
     $year = $_POST['year'];
     $birthday = $month." ".$day." ".$year;
     $gender = $_POST['gender'];
-    $queryInsert = "INSERT INTO account VALUES ('$email','$password','$firstname','$middlename','$lastname','$birthday','$gender')";
+
+    $mail = new PHPMailer;
+    $mail->isSMTP();
+    $mail->Host='smtp.gmail.com';
+    $mail->Port=587;
+    $mail->SMTPAuth=true;
+    $mail->SMTPSecure='tls';
+    
+    $mail->Username='ariellabuson08@gmail.com';
+    $mail->Password='zynywmrcmhnffyqz';
+    
+    $mail->setFrom('ariellabuson08@gmail.com','ariel');
+    $mail->addAddress($email);
+    $mail->addReplyTo('ariellabuson08@gmail.com');
+    
+    $mail->isHTML(true);
+    $verification_code = substr(number_format(time() * rand(),0,'',''),0,6);
+    $mail->Subject='PHP Mailer Subject';
+    $mail->Body= 'your verification code'.$verification_code;
+    if(!$mail->send()){
+        echo"Messege could not be sent";
+    }
+    else{
+        echo"Messege has been sent";
+
+    $queryInsert = "INSERT INTO account VALUES ('$email','$password','$firstname','$middlename','$lastname','$birthday','$gender','$verification_code','false')";
     $sqlInsert = mysqli_query($connection,$queryInsert);
-        echo '<script>alert("Successfully created!")</script>';
+        $sqlquery = "SELECT * FROM account WHERE email = '$email'";
+        $sqlresult =  mysqli_query($connection,$sqlquery);
+        $results = mysqli_fetch_array($sqlresult);
+if(mysqli_num_rows($sqlresult) > 0){
+    $_SESSION['email'] = $results['email'];
+    $_SESSION['verified'] = $results['verify'];
+
+    echo '<script>alert("We will send a verification code to your email!")</script>';
+    echo "<script>window.location.href='/login_form/verify.php'</script>";
+
+}
+}
 }
 ?>
 <!DOCTYPE html>
@@ -190,7 +228,9 @@ if(isset($_POST['signupbtn'])){
                 <div class="submit">
                     <input type="submit" class="signupbtn" name="signupbtn" value="Sign Up">
                 </div>
+                
                 </form>
+                
         </div>
     </div>
 </body>
