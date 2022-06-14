@@ -1,3 +1,22 @@
+<?php
+require("./database.php");
+
+if(isset($_POST['signupbtn'])){
+    $firstname = $_POST['fname'];
+    $middlename = $_POST['mname'];
+    $lastname = $_POST['lname'];
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $month = $_POST['month']; 
+    $day = $_POST['day'];
+    $year = $_POST['year'];
+    $birthday = $month." ".$day." ".$year;
+    $gender = $_POST['gender'];
+    $queryInsert = "INSERT INTO account VALUES ('$email','$password','$firstname','$middlename','$lastname','$birthday','$gender')";
+    $sqlInsert = mysqli_query($connection,$queryInsert);
+        echo '<script>alert("Successfully created!")</script>';
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,21 +29,24 @@
 <body>
     <div class="main">
         <div class="box1">
-            <form action="/login_form/signup.php" method="post">
+            <form action="" method="post">
                 <div class="text-field">
-                    <input type="text" class="fname" placeholder="First name" required>
+                    <input type="text" name="fname" class="fname" placeholder="First name" required>
                 </div>
                 <div class="text-field">
-                    <input type="text" class="lname"placeholder="Last name" required>
+                    <input type="text" name="mname" class="mname" placeholder="middle name" required>
                 </div>
                 <div class="text-field">
-                    <input type="email" class="email" placeholder="email" required>
+                    <input type="text" name="lname" class="lname"placeholder="Last name" required>
                 </div>
                 <div class="text-field">
-                    <input type="password" class="password" placeholder="New password" required>
+                    <input type="email" name="email" class="email" placeholder="email" required>
                 </div>
                 <div class="text-field">
-                    <input type="password" class="repassword" placeholder="Re-enter New password" required>
+                    <input type="password" name="password" class="password" placeholder="New password" required>
+                </div>
+                <div class="text-field">
+                    <input type="password" name="repassword" class="repassword" placeholder="Re-enter New password" required>
                 </div>
                 <div class="Birthday">
                     <select name="month">

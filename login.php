@@ -54,7 +54,7 @@ else{
     </div>
     <div class="navigation">
         <ul>
-            <li><a href="">Sign Up</a></li>
+            <li><a href="/login_form/signup.php">Sign Up</a> </li>
          </ul>
     </div>
         <div class="box">
